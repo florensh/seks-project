@@ -24,7 +24,7 @@ class Network(sizes: List[Int]) {
   /**
    * creates a List with random elements for a given number
    */
-  def randnomList[A](i: Int, f: () => A): List[A] = {
+  def randomList[A](i: Int, f: () => A): List[A] = {
     def loop(a: Int, acc: List[A]): List[A] =
       if (a == 0) acc
       else loop(a - 1, f() :: acc)
@@ -32,6 +32,6 @@ class Network(sizes: List[Int]) {
   }
 
   //create random biases for the neurons starting at the second layer
-  var biases = List[Double]() :: sizes.drop(1).map(x => randnomList(x, scala.util.Random.nextGaussian))
+  var biases = List[Double]() :: sizes.drop(1).map(x => randomList(x, scala.util.Random.nextGaussian))
 
 }
