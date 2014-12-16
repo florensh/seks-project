@@ -7,6 +7,7 @@ object Start {
   def main(args: Array[String]) {
     println("Working...")
     println(new Network(List(784, 30, 10)).biases)
+    println(new Network(List(784, 30, 10)).weights)
     println("Finished!")
 
   }
@@ -33,5 +34,8 @@ class Network(sizes: List[Int]) {
 
   //create random biases for the neurons starting at the second layer
   var biases = List[Double]() :: sizes.drop(1).map(x => randomList(x, scala.util.Random.nextGaussian))
+
+  //create random weights for the neurons
+  var weights = sizes.take(2).zip(sizes.drop(1)).map((x: (Int, Int)) => randomList(x._1 * x._2, scala.util.Random.nextGaussian))
 
 }
