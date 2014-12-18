@@ -7,18 +7,15 @@ object Start {
    * Starten des Programms
    */
   def main(args: Array[String]) {
-    val test_network = new Network(Vector(3, 4, 2))
+    val test_network = new Network(Vector(2, 10, 2))
 
     println(test_network.biases)
     println(test_network.weights)
 
     //    println(test_network.weights.zip(test_network.biases))
-    println(test_network.feedforward(Vector(1, 3, 4)))
+    println(test_network.feedforward(Vector(1, 1)))
 
   }
-
-  // Miscellaneous functions
-  def sigmoid(z: Double): Double = 1.0 / (1.0 + exp(-z))
 
 }
 /**
@@ -30,8 +27,8 @@ object Start {
  */
 class Network(sizes: Vector[Int]) {
 
-  //  def random() = scala.util.Random.nextGaussian
-  def random() = { 1 }
+  def random() = scala.util.Random.nextGaussian
+  //  def random() = { 1 }
 
   /**
    * creates a List with random elements for a given number
@@ -68,7 +65,7 @@ class Network(sizes: Vector[Int]) {
       //loop the neurons
       def loopN(j: Int, l: Int, li: Vector[Double], accN: Vector[Double]): Vector[Double] = {
         if (j == weights(l - 1).size) accN
-        else loopN(j + 1, l, li, accN.:+((li zip weights(l - 1)(j)).map { Function.tupled(_ * _) }.sum))
+        else loopN(j + 1, l, li, accN.:+(sigmoid((li zip weights(l - 1)(j)).map { Function.tupled(_ * _) }.sum + biases(l - 1)(j))))
       }
 
       if (i == sizes.size) accL
@@ -78,6 +75,9 @@ class Network(sizes: Vector[Int]) {
     loopL(1, a)
 
   }
+
+  // Miscellaneous functions
+  def sigmoid(z: Double): Double = 1.0 / (1.0 + exp(-z))
 
 }
 
