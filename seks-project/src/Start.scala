@@ -27,6 +27,8 @@ object Start {
  */
 class Network(sizes: Vector[Int]) {
 
+  require(!sizes.isEmpty)
+
   def random() = scala.util.Random.nextGaussian
   //  def random() = { 1 }
 
