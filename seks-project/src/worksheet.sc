@@ -1,32 +1,38 @@
-
+import java.util.zip.GZIPInputStream
+import java.io.FileInputStream
+import java.io.BufferedInputStream
 
 object worksheet {
-  val network = new Network(Vector(1, 2, 3))      //> network  : Network = Network@2dbae104
-
-  val r = scala.util.Random                       //> r  : util.Random.type = scala.util.Random$@62dba79e
-  r.nextGaussian()                                //> res0: Double = 0.2938310221727854
-
-  var l = List(1, 2, 3)                           //> l  : List[Int] = List(1, 2, 3)
-  def make_random[A](i: Int, f: () => A): List[A] = {
-    def loop(a: Int, acc: List[A]): List[A] =
-      if (a == 0) acc
-      else loop(a - 1, f() :: acc)
-    loop(i, List[A]())
-  }                                               //> make_random: [A](i: Int, f: () => A)List[A]
-  List[Double]() :: l.drop(1).map(x => make_random(x, scala.util.Random.nextGaussian))
-                                                  //> res1: List[List[Double]] = List(List(), List(-0.1553072565304044, -0.7303029
-                                                  //| 414333448), List(1.6419923597761763, -0.1157356548360616, 1.040471503712809)
-                                                  //| )
 
 
- 
-  val inputs = Vector[Double](1,3,2)              //> inputs  : scala.collection.immutable.Vector[Double] = Vector(1.0, 3.0, 2.0)
-                                                  //| 
-  val weights = Vector[Vector[Double]]((Vector[Double](1,1,1)),(Vector[Double](1,1,2)) )
-                                                  //> weights  : scala.collection.immutable.Vector[Vector[Double]] = Vector(Vector
-                                                  //| (1.0, 1.0, 1.0), Vector(1.0, 1.0, 2.0))
-  (inputs zip weights(0)).map{ Function.tupled(_ * _)}.sum
-                                                  //> res2: Double = 6.0
+  def dot(activation: List[Int], delta: List[Int]): List[List[Int]] = {
+    delta.map ( x => activation.map { y => x*y })
+  }                                               //> dot: (activation: List[Int], delta: List[Int])List[List[Int]]
+/*
+  def dot2(a: List[Int], b: List[Int]): List[List[Int]] = {
+    val retVal = List[List[Int]]()
+
+    def loop1(acc: List[List[Int]], i: Int, j: Int): List[List[Int]] = {
+      if (i == 0) {
+        return acc
+      } else {
+      	val l = List()
+        loop1(acc.:+l, i - 1, j)
+      }
+    }
+    loop1(retVal, a.size, b.size)
+  }
+*/
+
+  val activation = List(1, 2, 3)                  //> activation  : List[Int] = List(1, 2, 3)
+  val delta = List(3, 4)                          //> delta  : List[Int] = List(3, 4)
+//activation.map((delta,_).zipped.map(_*_).sum)
+	val l = delta.map ( x => activation.map { y => x * y })
+                                                  //> l  : List[List[Int]] = List(List(3, 6, 9), List(4, 8, 12))
   
-  
+  dot (activation, delta)                         //> res0: List[List[Int]] = List(List(3, 6, 9), List(4, 8, 12))
+val de = List(List(1,2,3)).transpose.map((List(2,2),_).zipped.map(_*_).sum)
+                                                  //> de  : List[Int] = List(2, 4, 6)
+
+
 }
