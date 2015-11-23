@@ -34,7 +34,7 @@ class MnistLabelReader(location: String, fileName: String) extends MnistFileRead
 
   val labelsAsInts = readLabels(0)
   val labelsAsVectors = labelsAsInts.map { label =>
-    (DenseVector.tabulate[Double](10) { i => if (i == label) 1.0 else 0.0 }).toDenseMatrix.t
+    DenseVector.tabulate[Double](10) { i => if (i == label) 1.0 else 0.0 }
   }
 
   private[this] def readLabels(ind: Int): Stream[Int] =
@@ -55,7 +55,7 @@ class MnistImageReader(location: String, fileName: String) extends MnistFileRead
 
   val imagesAsMatrices = readImages(0)
   val imagesAsVectors = imagesAsMatrices map { image =>
-    (DenseVector.tabulate(width * height) { i => image(i / width, i % height) / 255.0 }).toDenseMatrix.t
+    DenseVector.tabulate(width * height) { i => image(i / width, i % height) / 255.0 }
   }
 
   private[this] def readImages(ind: Int): Stream[DenseMatrix[Int]] =
@@ -93,6 +93,7 @@ class MnistDataset(location: String, dataset: String) {
   def labelsAsVectors = labelReader.labelsAsVectors
 
   def examples = imagesAsVectors zip labelsAsInts
+  
   def examplesVectors = imagesAsVectors zip labelsAsVectors
   def vector_matrix_labels = imagesAsVectors zip imagesAsMatrices zip labelsAsInts
 

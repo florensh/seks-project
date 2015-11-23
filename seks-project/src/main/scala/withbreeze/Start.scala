@@ -12,6 +12,7 @@ import java.awt.{Color, Paint}
 object Start {
   def main(args: Array[String]): Unit = {
 
+
     var conf = new NetworkConfiguration()
       .addNumTestImages(10000)
       .addNumImages(10000)
@@ -21,7 +22,7 @@ object Start {
 //      .addCostLogFunction { x => println("cost " + x) }
 
     val net = new Network(conf)
-    net.SGD(10, 10, 0.5)
+    net.SGD(30, 10, 0.5)
 
     val f2 = Figure()
     f2.width_=(900)
@@ -29,7 +30,7 @@ object Start {
     
     var n = 0
     Mnist.trainDataset.vector_matrix_labels.drop(151).take(25).foreach(d => printResults(d))
-    def printResults(test1: ((DenseMatrix[Double], DenseMatrix[Int]), Int)) {
+    def printResults(test1: ((DenseVector[Double], DenseMatrix[Int]), Int)) {
       val test1X = test1._1._1
       val test1Y = test1._2
       val test1Erg = net.feedforward(test1X)
@@ -43,7 +44,7 @@ object Start {
 
       val img = mat.map(xi => xi.toDouble)
       val sp = f2.subplot(5, 5, n) += image(img)
-      sp.title = "found value is " + test1Erg.argmax._1.toString
+      sp.title = "found value is " + test1Erg.argmax.toString
       sp.logScaleX_=(false)
       f2.refresh
       n = n + 1
